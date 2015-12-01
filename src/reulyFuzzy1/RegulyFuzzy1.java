@@ -194,8 +194,14 @@ public class RegulyFuzzy1 {
 		Przeslanka przeslanka = new Przeslanka(listaZbiorowDoPrzeslanki);
 		Regula regula = new Regula(przeslanka, cofaj);
 		listaRegul.add(regula);
+		//jesli jestes bardzo na lewo to jedz do przodu
 		/*
-		jesli jestes bardzo na lewo to jedz do przodu
+		listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear1>();
+		listaZbiorowDoPrzeslanki.add(polozenieBardzo);
+		przeslanka = new Przeslanka(listaZbiorowDoPrzeslanki);
+		regula = new Regula(przeslanka, cofaj);
+		listaRegul.add(regula);*/
+		/*
 		jezeli jestes srednio i orientacja bardzo lewo to jedz do przodu
 		jezeli jestes nisko i orientacja lewo to jedz do przodu
 		jezeli orientacja prawo to cofaj
@@ -226,7 +232,7 @@ public class RegulyFuzzy1 {
 			}
 		}
 		//teraz robie OR na koncu bede mial zbior do defuzzyfikacji
-		double[] konkluzjaKoncowa = { 0, 0 };
+		double[] konkluzjaKoncowa = { skretKol, przodTyl };
 		if(listaKonkluzji.size() > 0){
 			konkluzjaKoncowa = getKonkluzjaKoncowa(listaKonkluzji);
 		}
