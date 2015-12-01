@@ -108,13 +108,13 @@ public class RegulyFuzzy1 {
 		ArrayList<Punkt2D> wierzcholki9 = new ArrayList<Punkt2D>();
 		wierzcholki9.add( new Punkt2D( 0, 1 ) );
 		wierzcholki9.add( new Punkt2D( Math.PI/4, 0 ) );
-		orientacjaBardzoPrawo = new FuzzySetLinear1( wierzcholki9, "orientacja", "orientacjaBardzoPrawo" );
+		orientacjaBardzoLewo = new FuzzySetLinear1( wierzcholki9, "orientacja", "orientacjaBardzoLewo" );
 		//2
 		ArrayList<Punkt2D> wierzcholki10 = new ArrayList<Punkt2D>();
 		wierzcholki10.add(new Punkt2D( 0, 0 ));
 		wierzcholki10.add(new Punkt2D( Math.PI/4, 1 ));
 		wierzcholki10.add(new Punkt2D( Math.PI/2, 0 ));
-		orientacjaPrawo = new FuzzySetLinear1( wierzcholki10, "orientacja", "orientacjaPrawo" );
+		orientacjaLewo = new FuzzySetLinear1( wierzcholki10, "orientacja", "orientacjaLewo" );
 		//3
 		ArrayList<Punkt2D> wierzcholki11 = new ArrayList<Punkt2D>();
 		wierzcholki11.add(new Punkt2D( Math.PI/4, 0 ));
@@ -126,12 +126,12 @@ public class RegulyFuzzy1 {
 		wierzcholki12.add(new Punkt2D( Math.PI/2, 0 ));
 		wierzcholki12.add(new Punkt2D( Math.PI*3/4.0, 1 ));
 		wierzcholki12.add(new Punkt2D( Math.PI, 0 ));
-		orientacjaLewo = new FuzzySetLinear1( wierzcholki12, "orientacja", "orientacjaLewo" );
+		orientacjaPrawo = new FuzzySetLinear1( wierzcholki12, "orientacja", "orientacjaPrawo" );
 		//5
 		ArrayList<Punkt2D> wierzcholki13 = new ArrayList<Punkt2D>();
 		wierzcholki13.add(new Punkt2D( Math.PI*3/4.0, 0 ));
 		wierzcholki13.add(new Punkt2D( Math.PI, 1 ));
-		orientacjaBardzoLewo = new FuzzySetLinear1( wierzcholki13,"orientacja", "orientacjaBardzoLewo" );
+		orientacjaBardzoPrawo = new FuzzySetLinear1( wierzcholki13,"orientacja", "orientacjaBardzoPrawo" );
 		//Zbiory na wyjsciu - konkluzje implikacji, narazie niech beda tylko 2 prawo i lewo
 		//max skret na wyjsciu to bedzie +/- Math.Pi/45
 		//1
@@ -185,10 +185,16 @@ public class RegulyFuzzy1 {
 		regula = new Regula(przeslanka, skrecPrawo);
 		listaRegul.add(regula);
 		//jezeli orientacja na prawo to skrec w lewo
-		listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear1>();
+		/*listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear1>();
 		listaZbiorowDoPrzeslanki.add(orientacjaPrawo);
 		przeslanka = new Przeslanka(listaZbiorowDoPrzeslanki);
 		regula = new Regula(przeslanka, skrecPrawo);
+		listaRegul.add(regula);*/
+		//jezeli orientacja bardzo na lewo to skrec w prawo
+		listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear1>();
+		listaZbiorowDoPrzeslanki.add(orientacjaBardzoLewo);
+		przeslanka = new Przeslanka(listaZbiorowDoPrzeslanki);
+		regula = new Regula(przeslanka, skrecLewo);
 		listaRegul.add(regula);
 		//jezeli orientacja bardzo na prawo to skrec w lewo
 		listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear1>();
@@ -298,8 +304,9 @@ public class RegulyFuzzy1 {
 			konkluzjaKoncowa = getKonkluzjaKoncowa(listaKonkluzji);
 		}
 		//System.out.println("skret kol = "+konkluzjaKoncowa[0]+"  przodtyl = "+konkluzjaKoncowa[1]);
-		//System.out.println(listaRegul.get(0).czySieZapala(c.polozenie.x, c.polozenie.y, c.kierunek)+
-		//		"  y = "+c.polozenie.y+" konkluzjakoncowa skret = " + konkluzjaKoncowa[0]);
+		//for(int i = 1; i < 2; i++)
+			//System.out.println("Regula "+i+" czy sie zapala : "+listaRegul.get(i).czySieZapala(c.polozenie.x, c.polozenie.y, c.kierunek)+
+				//"  kierunek = "+c.kierunek+"  zmienna = "+listaRegul.get(i).przeslanka.zbiory.get(0).zmienna);
 		//koniec ustalania decyzji =========================
 		/*double[] result = new double[2];
 		result[0] = skretKol;
