@@ -3,11 +3,6 @@ import parkowanie.*;
 import java.awt.Point;
 import java.util.ArrayList;
 
-import parkowanie.Car;
-import parkowanie.FuzzySetLinear1;
-import parkowanie.ModelOtoczenia;
-import parkowanie.Punkt2D;
-
 public class RegulyFuzzy1 {
 	Point srodekParkingu;
 	Point zeroZero;
@@ -40,7 +35,7 @@ public class RegulyFuzzy1 {
 	FuzzySetLinear1 skretPrawo;
 	FuzzySetLinear1 skretLewo;
 	
-	ArrayList<Regula> reguly;
+	ArrayList<Regula> listaRegul;
 	
 	public RegulyFuzzy1(Car c, ModelOtoczenia mO){
 		polozenieSamochodu = new Point(c.polozenie.x, c.polozenie.y);
@@ -148,7 +143,7 @@ public class RegulyFuzzy1 {
 		skretLewo = new FuzzySetLinear1(wierzcholki15);
 		
 		//----------------------------------------------------------------------------------------------------------------------------------------------------
-		FuzzySetLinear1 polozenieBardzoPrawo;
+		/*FuzzySetLinear1 polozenieBardzoPrawo;
 		FuzzySetLinear1 polozeniePrawo;
 		FuzzySetLinear1 polozenieSrodek;
 		FuzzySetLinear1 polozenieLewo;
@@ -162,8 +157,9 @@ public class RegulyFuzzy1 {
 		FuzzySetLinear1 orientacjaPrawo;
 		FuzzySetLinear1 orientacjaSrodek; //srodek znaczy tutaj poziomo i w prawo skierowane auto
 		FuzzySetLinear1 orientacjaLewo;
-		FuzzySetLinear1 orientacjaBardzoLewo;
+		FuzzySetLinear1 orientacjaBardzoLewo;*/
 		//Zbior regul ----------------------------------------------------------------------------------------------------------------------------------------
+		listaRegul = new ArrayList<Regula>();
 		//osobno dla skretu
 		/*
 		jezeli orientacja na prawo to skrec w lewo
@@ -198,7 +194,21 @@ public class RegulyFuzzy1 {
 			przodTyl = -1;
 		//ustalenie decyzji=================================
 		
-		
+		//po wszystkich regulach sprawdz czy sie zapalaja
+		Regula r;
+		ArrayList<FuzzySetLinear1> listaKonkluzji = new ArrayList<FuzzySetLinear1>();
+		for(int i = 0; i < listaRegul.size(); i++){
+			r = listaRegul.get(i);
+			if(r.czySieZapala(polozenieSamochodu.x, polozenieSamochodu.y, orientacjaSamochodu)){
+				listaKonkluzji.add(r.getKonkluzjaPrzycieta(polozenieSamochodu.x, polozenieSamochodu.y, orientacjaSamochodu));
+			}
+		}
+		//teraz robie OR na koncu bede mial zbior do defuzzyfikacji
+		FuzzySetLinear1 konkluzjaKoncowa;
+		if(listaKonkluzji.size() > 0){
+			konkluzjaKoncowa = getKonkluzjaKoncowa(listaKonkluzji);
+			
+		}
 		
 		//koniec ustalania decyzji =========================
 		double[] result = new double[2];
@@ -206,4 +216,47 @@ public class RegulyFuzzy1 {
 		result[1] = przodTyl;
 		return result;
 	}
+	
+	private double[] getKonkluzjaKoncowa(ArrayList<FuzzySetLinear1> listaKonkluzji){
+		FuzzySetLinear1 konkluzjaKoncowaZwrot, konkluzjaKoncowaKierunek;
+		FuzzySetLinear1 konkluzjaTmp;
+		ArrayList<FuzzySetLinear1> listaKonkluzjiDotyczacychZwrotu = new ArrayList<FuzzySetLinear1>();
+		for(int i = 0; i < listaKonkluzji.size(); i++){
+			konkluzjaTmp = listaKonkluzji.get(i);
+			if(konkluzjaTmp.zmienna.equals("zwrot"))
+				listaKonkluzjiDotyczacychZwrotu.add(listaKonkluzji.get(i));
+		}
+		ArrayList<FuzzySetLinear1> listaKonkluzjiDotyczacychKierunku = new ArrayList<FuzzySetLinear1>();
+		for(int i = 0; i < listaKonkluzji.size(); i++){
+			konkluzjaTmp = listaKonkluzji.get(i);
+			if(konkluzjaTmp.zmienna.equals("kierunek"))
+				listaKonkluzjiDotyczacychKierunku.add(listaKonkluzji.get(i));
+		}	
+		if(listaKonkluzjiDotyczacychZwrotu.size() > 0){
+			konkluzjaKoncowaZwrot = listaKonkluzjiDotyczacychZwrotu.get(0);
+			for(int i = 0; i < listaKonkluzjiDotyczacychZwrotu.size(); i++)			
+				konkluzjaKoncowaZwrot = konkluzjaKoncowaZwrot.or(listaKonkluzjiDotyczacychZwrotu.get(i));
+		} else
+			konkluzjaKoncowaZwrot = new FuzzySetLinear1();
+		if(listaKonkluzjiDotyczacychKierunku.size() > 0){
+			konkluzjaKoncowaKierunek = listaKonkluzjiDotyczacychKierunku.get(0);
+			for(int i = 0; i < listaKonkluzjiDotyczacychKierunku.size(); i++)			
+				konkluzjaKoncowaKierunek = konkluzjaKoncowaKierunek.or(listaKonkluzjiDotyczacychKierunku.get(i));
+		} else
+			konkluzjaKoncowaKierunek = new FuzzySetLinear1();
+		
+		double[] konkluzjaKoncowa;
+		konkluzjaKoncowa = defuzzyfication(konkluzjaKoncowaKierunek, konkluzjaKoncowaZwrot);
+
+		
+		return konkluzjaKoncowa;
+	}
+	
+	private double[] defuzzyfication(FuzzySetLinear1 zbiorKierunek, FuzzySetLinear1 zbiorZwrot){
+		double zwrot, kierunek;
+		//nazwy zbiorow!!!!!!!!!!!!!!!!!!!!!!!, zbior wyjsciowy mocno prawo mocno lewo lekko prawo, zdefiniowac i dopiero tutaj!!!!
+	}
+	
 }
+
+

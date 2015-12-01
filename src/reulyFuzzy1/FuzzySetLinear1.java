@@ -1,16 +1,36 @@
-package parkowanie;
+package reulyFuzzy1;
 import java.awt.Point;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import parkowanie.Punkt2D;
+
 public class FuzzySetLinear1 {
 	ArrayList<Punkt2D> wierzcholki;
+	String zmienna;
 	
-	public FuzzySetLinear1(ArrayList<Punkt2D> wierzcholki){
+	public FuzzySetLinear1(){
+		zmienna = "pusty";
+		wierzcholki = new ArrayList<Punkt2D>();
+		wierzcholki.add(new Punkt2D(0, 0));
+	}
+	
+	public FuzzySetLinear1(ArrayList<Punkt2D> wierzcholki, String zmienna){
+		this.zmienna = zmienna;
 		this.wierzcholki = wierzcholki;
 		sortujWierzcholki();
+	}
+	
+	public FuzzySetLinear1(FuzzySetLinear1 set){
+		zmienna = set.zmienna;
+		wierzcholki = new ArrayList<Punkt2D>();
+		Punkt2D p;
+		for(int i = 0; i < set.wierzcholki.size(); i++){
+			p = set.wierzcholki.get(i);
+			wierzcholki.add(new Punkt2D(p));
+		}
 	}
 	
 	//public ZbiotRozmyty or(ZbiorRozmytyset){
@@ -142,7 +162,7 @@ public class FuzzySetLinear1 {
 		wierzcholkiNowegoZbioru.add(new Punkt2D( Math.max(wierzcholki.get(wierzcholki.size()-1).x, set.wierzcholki.get(set.wierzcholki.size()-1).x) , 0 ));
 		//koniec poczatku i konca
 		
-		return new FuzzySetLinear1(wierzcholkiNowegoZbioru);
+		return new FuzzySetLinear1(wierzcholkiNowegoZbioru, zmienna);
 	}
 	
 	public void przytnij(double y){
@@ -180,7 +200,7 @@ public class FuzzySetLinear1 {
 		for(int i=0; i<wierzcholki.size(); i++){
 			wierzcholkiNowegoZbioru.add( new Punkt2D( wierzcholki.get(i).x, (1-wierzcholki.get(i).y ) ) );
 		}
-		return new FuzzySetLinear1(wierzcholkiNowegoZbioru);
+		return new FuzzySetLinear1(wierzcholkiNowegoZbioru, zmienna);
 	}
 	
 	public FuzzySetLinear1 or(FuzzySetLinear1 set){
@@ -263,7 +283,7 @@ public class FuzzySetLinear1 {
 		}
 		//koniec poczatku i konca
 		
-		return new FuzzySetLinear1(wierzcholkiNowegoZbioru);
+		return new FuzzySetLinear1(wierzcholkiNowegoZbioru, zmienna);
 	}
 	
 	
