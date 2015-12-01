@@ -25,8 +25,8 @@ public class Car {
 	//stosunek dlugosc szerokosc  i odleglosc od tylu auta do osi tylnych kol ( os obrotu samochodu) taka jak we fiacie punto
 	double rozmiarAuta =1.0;
 	public final Point wymiary = new Point((int)(130*rozmiarAuta), (int)(300*rozmiarAuta)); //zawsze pierwszy wymiar ma byc mniejszy!!!!
-	final int odleglosc_od_tylu_do_osi = (int)(45*rozmiarAuta);
-	final int odleglosc_od_przodu_do_osi = wymiary.y-odleglosc_od_tylu_do_osi; //y- dlugosc auta (wiekszy wymiar)
+	public final int odleglosc_od_tylu_do_osi = (int)(45*rozmiarAuta);
+	public final int odleglosc_od_przodu_do_osi = wymiary.y-odleglosc_od_tylu_do_osi; //y- dlugosc auta (wiekszy wymiar)
 	//Graphics2D g2d;
 	
 	BufferedImage mapa_parkingu;

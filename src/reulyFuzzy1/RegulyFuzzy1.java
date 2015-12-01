@@ -61,26 +61,26 @@ public class RegulyFuzzy1 {
 		polozenieBardzoPrawo = new FuzzySetLinear1( wierzcholki1, "x" );
 		//2
 		ArrayList<Punkt2D> wierzcholki2 = new ArrayList<Punkt2D>();
-		wierzcholki2.add(new Punkt2D( (r + 0.5*(zeroZero.x + w - R - r)), 0 ));
+		wierzcholki2.add(new Punkt2D( ( zeroZero.x + 0.5*w - (c.odleglosc_od_przodu_do_osi - c.wymiary.getY()) ), 0 ));
 		wierzcholki2.add(new Punkt2D( (zeroZero.x + w -R), 1 ));
 		wierzcholki2.add(new Punkt2D( (zeroZero.x + w), 0 ));
 		polozeniePrawo = new FuzzySetLinear1( wierzcholki2, "x" );
 		//3
 		ArrayList<Punkt2D> wierzcholki3 = new ArrayList<Punkt2D>();
-		wierzcholki3.add(new Punkt2D( r, 0 ));
-		wierzcholki3.add(new Punkt2D( (r + 0.5*(zeroZero.x + w - R - r)), 1 ));
+		wierzcholki3.add(new Punkt2D( zeroZero.x + r, 0 ));
+		wierzcholki3.add(new Punkt2D( ( zeroZero.x + 0.5*w - (c.odleglosc_od_przodu_do_osi - c.wymiary.getY()) ), 1 ));
 		wierzcholki3.add(new Punkt2D( (zeroZero.x + w -R), 0 ));
 		polozenieSrodek = new FuzzySetLinear1( wierzcholki3, "x" );
 		//4
 		ArrayList<Punkt2D> wierzcholki4 = new ArrayList<Punkt2D>();
 		wierzcholki4.add(new Punkt2D( zeroZero.x, 0 ));
-		wierzcholki4.add(new Punkt2D( r, 1 ));
-		wierzcholki4.add(new Punkt2D( (r + 0.5*(zeroZero.x + w - R - r)), 0 ));
+		wierzcholki4.add(new Punkt2D( zeroZero.x + r, 1 ));
+		wierzcholki4.add(new Punkt2D( ( zeroZero.x + 0.5*w - (c.odleglosc_od_przodu_do_osi - c.wymiary.getY()) ), 0 ));
 		polozenieLewo = new FuzzySetLinear1( wierzcholki4, "x" );
 		//5
 		ArrayList<Punkt2D> wierzcholki5 = new ArrayList<Punkt2D>();
 		wierzcholki5.add(new Punkt2D( zeroZero.x, 1 ));
-		wierzcholki5.add(new Punkt2D( r, 0 ));
+		wierzcholki5.add(new Punkt2D( zeroZero.x + r, 0 ));
 		polozenieBardzoLewo = new FuzzySetLinear1( wierzcholki5, "x" );
 		//===========================================================
 		//goradol
@@ -195,12 +195,11 @@ public class RegulyFuzzy1 {
 		Regula regula = new Regula(przeslanka, cofaj);
 		listaRegul.add(regula);
 		//jesli jestes bardzo na lewo to jedz do przodu
-		/*
-		listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear1>();
-		listaZbiorowDoPrzeslanki.add(polozenieBardzo);
-		przeslanka = new Przeslanka(listaZbiorowDoPrzeslanki);
-		regula = new Regula(przeslanka, cofaj);
-		listaRegul.add(regula);*/
+		ArrayList<FuzzySetLinear1> listaZbiorowDoPrzeslanki2 = new ArrayList<FuzzySetLinear1>();
+		listaZbiorowDoPrzeslanki2.add(polozenieBardzoLewo);
+		Przeslanka przeslanka2 = new Przeslanka(listaZbiorowDoPrzeslanki2);
+		Regula regula2 = new Regula(przeslanka2, jedzNaprzod);
+		listaRegul.add(regula2);
 		/*
 		jezeli jestes srednio i orientacja bardzo lewo to jedz do przodu
 		jezeli jestes nisko i orientacja lewo to jedz do przodu
@@ -236,7 +235,9 @@ public class RegulyFuzzy1 {
 		if(listaKonkluzji.size() > 0){
 			konkluzjaKoncowa = getKonkluzjaKoncowa(listaKonkluzji);
 		}
-		System.out.println("skret kol = "+konkluzjaKoncowa[0]+"  przodtyl = "+konkluzjaKoncowa[1]);
+		//System.out.println("skret kol = "+konkluzjaKoncowa[0]+"  przodtyl = "+konkluzjaKoncowa[1]);
+		System.out.println(listaRegul.get(1).czySieZapala(c.polozenie.x, c.polozenie.y, c.kierunek)+
+				"  x = "+c.polozenie.x);
 		//koniec ustalania decyzji =========================
 		/*double[] result = new double[2];
 		result[0] = skretKol;
