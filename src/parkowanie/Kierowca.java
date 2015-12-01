@@ -60,6 +60,7 @@ public class Kierowca implements ActionListener {
 	
 	private void startDriveFuzzy1(){
 		while(!taskIsComplete()){
+			//System.out.println("jestem fuzzy");
 			try {
 				Thread.sleep(100);
 				decyzjaOSkrecieIZwrocieFuzzy1(samochod, !samochod.czyWstecznyBieg);

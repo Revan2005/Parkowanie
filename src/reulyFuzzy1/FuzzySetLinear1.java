@@ -10,11 +10,19 @@ import parkowanie.Punkt2D;
 public class FuzzySetLinear1 {
 	ArrayList<Punkt2D> wierzcholki;
 	String zmienna;
+	String nazwa = "";
 	
 	public FuzzySetLinear1(){
 		zmienna = "pusty";
 		wierzcholki = new ArrayList<Punkt2D>();
 		wierzcholki.add(new Punkt2D(0, 0));
+	}
+	
+	public FuzzySetLinear1(ArrayList<Punkt2D> wierzcholki, String zmienna, String nazwaZbioru){
+		this.nazwa = nazwaZbioru;
+		this.zmienna = zmienna;
+		this.wierzcholki = wierzcholki;
+		sortujWierzcholki();
 	}
 	
 	public FuzzySetLinear1(ArrayList<Punkt2D> wierzcholki, String zmienna){
@@ -24,6 +32,7 @@ public class FuzzySetLinear1 {
 	}
 	
 	public FuzzySetLinear1(FuzzySetLinear1 set){
+		nazwa = set.nazwa;
 		zmienna = set.zmienna;
 		wierzcholki = new ArrayList<Punkt2D>();
 		Punkt2D p;
@@ -162,7 +171,7 @@ public class FuzzySetLinear1 {
 		wierzcholkiNowegoZbioru.add(new Punkt2D( Math.max(wierzcholki.get(wierzcholki.size()-1).x, set.wierzcholki.get(set.wierzcholki.size()-1).x) , 0 ));
 		//koniec poczatku i konca
 		
-		return new FuzzySetLinear1(wierzcholkiNowegoZbioru, zmienna);
+		return new FuzzySetLinear1(wierzcholkiNowegoZbioru, zmienna, nazwa);
 	}
 	
 	public void przytnij(double y){
@@ -200,7 +209,7 @@ public class FuzzySetLinear1 {
 		for(int i=0; i<wierzcholki.size(); i++){
 			wierzcholkiNowegoZbioru.add( new Punkt2D( wierzcholki.get(i).x, (1-wierzcholki.get(i).y ) ) );
 		}
-		return new FuzzySetLinear1(wierzcholkiNowegoZbioru, zmienna);
+		return new FuzzySetLinear1(wierzcholkiNowegoZbioru, zmienna, nazwa);
 	}
 	
 	public FuzzySetLinear1 or(FuzzySetLinear1 set){
@@ -283,7 +292,7 @@ public class FuzzySetLinear1 {
 		}
 		//koniec poczatku i konca
 		
-		return new FuzzySetLinear1(wierzcholkiNowegoZbioru, zmienna);
+		return new FuzzySetLinear1(wierzcholkiNowegoZbioru, zmienna, nazwa);
 	}
 	
 	
@@ -323,7 +332,7 @@ public class FuzzySetLinear1 {
 	}
 	
 	public void pisz(){
-		System.out.println("Zbiór rozmyty:");
+		System.out.println("Zbiór rozmyty: "+nazwa);
 		for(int i=0; i<wierzcholki.size(); i++){
 			System.out.println(wierzcholki.get(i).x +" "+ wierzcholki.get(i).y);
 		}
