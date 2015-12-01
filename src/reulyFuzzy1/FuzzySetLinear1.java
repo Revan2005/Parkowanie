@@ -85,7 +85,8 @@ public class FuzzySetLinear1 {
 			sorted.add(new Punkt2D(punktyPrzeciec.get(minIndex)));
 			punktyPrzeciec.remove(minIndex);
 		}
-		sorted.add(punktyPrzeciec.get(0));
+		if(punktyPrzeciec.size() > 0)
+			sorted.add(punktyPrzeciec.get(0));
 		return sorted;
 	}
 	
