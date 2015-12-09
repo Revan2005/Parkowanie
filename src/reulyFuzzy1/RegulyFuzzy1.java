@@ -12,6 +12,7 @@ public class RegulyFuzzy1 {
 	int h;
 	double orientacjaSamochodu;
 	Point polozenieSamochodu;
+	double PROG_PRZYNALEZNOSCI_WYMAGANEJ_DO_ZMIANY_ZWROTU = 0.1;
 	
 	//moje zbiory rozmyte
 	//prawolewo
@@ -61,22 +62,22 @@ public class RegulyFuzzy1 {
 		polozenieBardzoPrawo = new FuzzySetLinear1( wierzcholki1, "x" );
 		//2
 		ArrayList<Punkt2D> wierzcholki2 = new ArrayList<Punkt2D>();
-		wierzcholki2.add(new Punkt2D( ( zeroZero.x + 0.5*w - (c.odleglosc_od_przodu_do_osi - c.wymiary.getY()) ), 0 ));
+		wierzcholki2.add(new Punkt2D( ( zeroZero.x + 0.5*w - (c.odleglosc_od_przodu_do_osi - c.wymiary.getY()/2) ), 0 ));
 		wierzcholki2.add(new Punkt2D( (zeroZero.x + w -R), 1 ));
 		wierzcholki2.add(new Punkt2D( (zeroZero.x + w), 0 ));
 		polozeniePrawo = new FuzzySetLinear1( wierzcholki2, "x" );
 		//3
 		ArrayList<Punkt2D> wierzcholki3 = new ArrayList<Punkt2D>();
 		wierzcholki3.add(new Punkt2D( zeroZero.x + r, 0 ));
-		wierzcholki3.add(new Punkt2D( ( zeroZero.x + 0.5*w - (c.odleglosc_od_przodu_do_osi - c.wymiary.getY()) ), 1 ));
+		wierzcholki3.add(new Punkt2D( ( zeroZero.x + 0.5*w - (c.odleglosc_od_przodu_do_osi - c.wymiary.getY()/2) ), 1 ));
 		wierzcholki3.add(new Punkt2D( (zeroZero.x + w -R), 0 ));
 		polozenieSrodek = new FuzzySetLinear1( wierzcholki3, "x" );
 		//4
 		ArrayList<Punkt2D> wierzcholki4 = new ArrayList<Punkt2D>();
 		wierzcholki4.add(new Punkt2D( zeroZero.x, 0 ));
 		wierzcholki4.add(new Punkt2D( zeroZero.x + r, 1 ));
-		wierzcholki4.add(new Punkt2D( ( zeroZero.x + 0.5*w - (c.odleglosc_od_przodu_do_osi - c.wymiary.getY()) ), 0 ));
-		polozenieLewo = new FuzzySetLinear1( wierzcholki4, "x" );
+		wierzcholki4.add(new Punkt2D( ( zeroZero.x + 0.5*w - (c.odleglosc_od_przodu_do_osi - c.wymiary.getY()/2) ), 0 ));
+		polozenieLewo = new FuzzySetLinear1( wierzcholki4, "x" );		
 		//5
 		ArrayList<Punkt2D> wierzcholki5 = new ArrayList<Punkt2D>();
 		wierzcholki5.add(new Punkt2D( zeroZero.x, 1 ));
@@ -136,13 +137,13 @@ public class RegulyFuzzy1 {
 		//max skret na wyjsciu to bedzie +/- Math.Pi/45
 		//1
 		ArrayList<Punkt2D> wierzcholki14 = new ArrayList<Punkt2D>();
-		wierzcholki14.add(new Punkt2D( -Math.PI/45.0, 0 ));
+		wierzcholki14.add(new Punkt2D( 0, 0 ));
 		wierzcholki14.add(new Punkt2D( Math.PI/45.0, 1 ));
 		skrecPrawo = new FuzzySetLinear1(wierzcholki14, "skret", "skrecPrawo" );
 		//2
 		ArrayList<Punkt2D> wierzcholki15 = new ArrayList<Punkt2D>();
 		wierzcholki15.add(new Punkt2D( -Math.PI/45.0, 1 ));
-		wierzcholki15.add(new Punkt2D( Math.PI/45.0, 0 ));
+		wierzcholki15.add(new Punkt2D( 0, 0 ));
 		skrecLewo = new FuzzySetLinear1(wierzcholki15, "skret", "skrecLewo" );
 		//zbiory na wyjsciu dotyczace zwrotu przod tyl, -1 cofaj, 0 i wiecej - jedz do przodu
 		//1
@@ -177,6 +178,7 @@ public class RegulyFuzzy1 {
 		ArrayList<FuzzySetLinear1> listaZbiorowDoPrzeslanki;
 		Przeslanka przeslanka;
 		Regula regula;
+		/*
 		//osobno dla skretu
 		//jezeli jestes wyosko to skrec w lewo
 		listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear1>();
@@ -185,11 +187,11 @@ public class RegulyFuzzy1 {
 		regula = new Regula(przeslanka, skrecPrawo);
 		listaRegul.add(regula);
 		//jezeli orientacja na prawo to skrec w lewo
-		/*listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear1>();
+		listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear1>();
 		listaZbiorowDoPrzeslanki.add(orientacjaPrawo);
 		przeslanka = new Przeslanka(listaZbiorowDoPrzeslanki);
 		regula = new Regula(przeslanka, skrecPrawo);
-		listaRegul.add(regula);*/
+		listaRegul.add(regula);
 		//jezeli orientacja bardzo na lewo to skrec w prawo
 		listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear1>();
 		listaZbiorowDoPrzeslanki.add(orientacjaBardzoLewo);
@@ -238,20 +240,56 @@ public class RegulyFuzzy1 {
 		przeslanka = new Przeslanka(listaZbiorowDoPrzeslanki);
 		regula = new Regula(przeslanka, skrecLewo);
 		listaRegul.add(regula);
-		
+		*/
 		//osobno dla ruchu
-		//jesli jestes bardzo na prawo to cofaj
+		//jesli jestes bardzo na prawo to cofaj 
 		listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear1>();
 		listaZbiorowDoPrzeslanki.add(polozenieBardzoPrawo);
 		przeslanka = new Przeslanka(listaZbiorowDoPrzeslanki);
 		regula = new Regula(przeslanka, cofaj);
 		listaRegul.add(regula);
-		//jesli jestes bardzo na lewo to jedz do przodu
+		//jesli jestes bardzo na lewo to jedz do przodu 
 		listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear1>();
 		listaZbiorowDoPrzeslanki.add(polozenieBardzoLewo);
 		przeslanka = new Przeslanka(listaZbiorowDoPrzeslanki);
 		regula = new Regula(przeslanka, jedzNaprzod);
 		listaRegul.add(regula);
+		/*
+		listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear1>();
+		listaZbiorowDoPrzeslanki.add(polozenieBardzoPrawo);
+		przeslanka = new Przeslanka(listaZbiorowDoPrzeslanki);
+		regula = new Regula(przeslanka, skrecPrawo);
+		listaRegul.add(regula);
+		//jesli jestes na prawo to cofaj i skrec kola w prawo
+		//listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear1>();
+		//listaZbiorowDoPrzeslanki.add(polozeniePrawo);
+		//przeslanka = new Przeslanka(listaZbiorowDoPrzeslanki);
+		//regula = new Regula(przeslanka, cofaj);
+		//listaRegul.add(regula);
+		//listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear1>();
+		//listaZbiorowDoPrzeslanki.add(polozeniePrawo);
+		//przeslanka = new Przeslanka(listaZbiorowDoPrzeslanki);
+		//regula = new Regula(przeslanka, skrecLewo);
+		//listaRegul.add(regula);
+		//jesli jestes na srodku to cofaj i skrec kola w lewo
+		listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear1>();
+		listaZbiorowDoPrzeslanki.add(polozenieSrodek);
+		przeslanka = new Przeslanka(listaZbiorowDoPrzeslanki);
+		regula = new Regula(przeslanka, cofaj);
+		listaRegul.add(regula);
+		listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear1>();
+		listaZbiorowDoPrzeslanki.add(polozenieSrodek);
+		przeslanka = new Przeslanka(listaZbiorowDoPrzeslanki);
+		regula = new Regula(przeslanka, skrecLewo);
+		listaRegul.add(regula);
+		//jezeli wysokosc srednio to odbijaj
+		listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear1>();
+		listaZbiorowDoPrzeslanki.add(hSrednio);
+		przeslanka = new Przeslanka(listaZbiorowDoPrzeslanki);
+		regula = new Regula(przeslanka, skrecLewo);
+		listaRegul.add(regula);
+		*/
+		/*
 		//jezeli jestes srednio wysoko i orientacja bardzo lewo to jedz do przodu
 		listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear1>();
 		listaZbiorowDoPrzeslanki.add(hSrednio);
@@ -272,20 +310,20 @@ public class RegulyFuzzy1 {
 		przeslanka = new Przeslanka(listaZbiorowDoPrzeslanki);
 		regula = new Regula(przeslanka, cofaj);
 		listaRegul.add(regula);
-		
+		*/
 		//----------------------------------------------------------------------------------------------------------------------------------------------------
 	}
 	
 	
-	public double[] podejmijDecyzje(Car c, boolean dotychczasDoPrzodu){
+	public double[] podejmijDecyzje(Car c, boolean czyDotychczasDoPrzodu){
 		polozenieSamochodu = new Point(c.polozenie.x, c.polozenie.y);
 		orientacjaSamochodu = c.kierunek;
 		//inicjalizacja wynikow dzialania metody
 		double skretKol = 0;
-		double przodTyl = 0;
-		if(dotychczasDoPrzodu)
+		double przodTyl;
+		if(czyDotychczasDoPrzodu)
 			przodTyl = 0;
-		else
+		else 
 			przodTyl = -1;
 		//ustalenie decyzji=================================
 		
@@ -301,7 +339,7 @@ public class RegulyFuzzy1 {
 		//teraz robie OR na koncu bede mial zbior do defuzzyfikacji
 		double[] konkluzjaKoncowa = { skretKol, przodTyl };
 		if(listaKonkluzji.size() > 0){
-			konkluzjaKoncowa = getKonkluzjaKoncowa(listaKonkluzji);
+			konkluzjaKoncowa = getKonkluzjaKoncowa(listaKonkluzji, czyDotychczasDoPrzodu);
 		}
 		//System.out.println("skret kol = "+konkluzjaKoncowa[0]+"  przodtyl = "+konkluzjaKoncowa[1]);
 		//for(int i = 1; i < 2; i++)
@@ -315,7 +353,7 @@ public class RegulyFuzzy1 {
 		return konkluzjaKoncowa;
 	}
 	
-	private double[] getKonkluzjaKoncowa(ArrayList<FuzzySetLinear1> listaKonkluzji){
+	private double[] getKonkluzjaKoncowa(ArrayList<FuzzySetLinear1> listaKonkluzji, boolean czyDotychczasDoPrzodu){
 		FuzzySetLinear1 konkluzjaKoncowaZwrot, konkluzjaKoncowaSkret;
 		FuzzySetLinear1 konkluzjaTmp;
 		ArrayList<FuzzySetLinear1> listaKonkluzjiDotyczacychZwrotu = new ArrayList<FuzzySetLinear1>();
@@ -330,7 +368,7 @@ public class RegulyFuzzy1 {
 		konkluzjaKoncowaZwrot = getKonkluzjaDotyczacaZwrotu(listaKonkluzjiDotyczacychZwrotu);
 		konkluzjaKoncowaSkret = getKonkluzjaDotyczacaSkretu(listaKonkluzjiDotyczacychSkretu);
 		double[] konkluzjaKoncowa;
-		konkluzjaKoncowa = defuzzyfication(konkluzjaKoncowaSkret, konkluzjaKoncowaZwrot);
+		konkluzjaKoncowa = defuzzyfication(konkluzjaKoncowaSkret, konkluzjaKoncowaZwrot, czyDotychczasDoPrzodu);
 
 		
 		return konkluzjaKoncowa;
@@ -358,11 +396,16 @@ public class RegulyFuzzy1 {
 			konkluzjaKoncowaZwrotTyl = listaKonkluzjiDotyczacychZwrotuCofaj.get(0);
 		for(int i = 1; i < listaKonkluzjiDotyczacychZwrotuCofaj.size(); i++)
 			konkluzjaKoncowaZwrotTyl = konkluzjaKoncowaZwrotTyl.or(listaKonkluzjiDotyczacychZwrotuCofaj.get(i));
-		
+		FuzzySetLinear1 konkluzjaKoncowaKontynuujObecnyRuch = new FuzzySetLinear1();
+		konkluzjaKoncowaKontynuujObecnyRuch.nazwa = "kontynuujObecnyRuch";
+		System.out.println("przod: "+maxPrzynaleznosc(konkluzjaKoncowaZwrotPrzod)+
+							" tyl: "+maxPrzynaleznosc(konkluzjaKoncowaZwrotTyl));
+		if( (maxPrzynaleznosc(konkluzjaKoncowaZwrotPrzod) < PROG_PRZYNALEZNOSCI_WYMAGANEJ_DO_ZMIANY_ZWROTU) && (maxPrzynaleznosc(konkluzjaKoncowaZwrotTyl) < PROG_PRZYNALEZNOSCI_WYMAGANEJ_DO_ZMIANY_ZWROTU) ){
+			return konkluzjaKoncowaKontynuujObecnyRuch;
+		}
 		if(maxPrzynaleznosc(konkluzjaKoncowaZwrotPrzod) > maxPrzynaleznosc(konkluzjaKoncowaZwrotTyl))
 			return konkluzjaKoncowaZwrotPrzod;
 		return konkluzjaKoncowaZwrotTyl;
-		
 	}
 	
 	private double maxPrzynaleznosc(FuzzySetLinear1 zbior){
@@ -404,12 +447,20 @@ public class RegulyFuzzy1 {
 		return konkluzjaKoncowaSkretLewo;
 	}
 	
-	private double[] defuzzyfication(FuzzySetLinear1 zbiorKierunek, FuzzySetLinear1 zbiorZwrot){
+	private double[] defuzzyfication(FuzzySetLinear1 zbiorKierunek, FuzzySetLinear1 zbiorZwrot, boolean czyDotychczasDoPrzodu){
 		double zwrot = 0, skret;
-		if(zbiorZwrot.nazwa.equals("jedzNaprzod"))
+		if(zbiorZwrot.nazwa.equals("kontynuujObecnyRuch")){
+			if(czyDotychczasDoPrzodu)
+				zwrot = 0;
+			else
+				zwrot = -1;
+		}
+		if(zbiorZwrot.nazwa.equals("jedzNaprzod")){
 			zwrot = 0;
-		if(zbiorZwrot.nazwa.equals("cofaj"))
+		}
+		if(zbiorZwrot.nazwa.equals("cofaj")){
 			zwrot = -1;
+		}
 		skret = getSkretZMaxPrzynaleznoscia(zbiorKierunek);
 		double[] result = { skret, zwrot };
 		return result;

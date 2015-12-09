@@ -143,19 +143,19 @@ public class Kierowca implements ActionListener {
 	}
 
 	public void decyzjaOSkrecieIZwrocieRegulyOstre(Car c, boolean dotychczasDoPrzodu){		
-		double[] decyzja = modulDecyzyjny.decyzjaRegulyOstre(c, dotychczasDoPrzodu);
+		double[] decyzja = modulDecyzyjny.decyzjaRegulyOstre(c, !c.czyWstecznyBieg);
 		c.krok(decyzja);
 		//decyzja = kierowca.decyzjaOSkrecieIZwrocie(this, !czyWstecznyBieg);
 	}
 	
 	public void decyzjaOSkrecieIZwrocieFuzzy1(Car c, boolean dotychczasDoPrzodu){		
-		double[] decyzja = modulDecyzyjny.decyzjaFuzzy1(c, dotychczasDoPrzodu);
+		double[] decyzja = modulDecyzyjny.decyzjaFuzzy1(c, !c.czyWstecznyBieg);
 		c.krok(decyzja);
 		//decyzja = kierowca.decyzjaOSkrecieIZwrocie(this, !czyWstecznyBieg);
 	}
 	
 	public void decyzjaOSkrecieIZwrocieFuzzy2(Car c, boolean dotychczasDoPrzodu){		
-		double[] decyzja = modulDecyzyjny.decyzjaFuzzy2(c, dotychczasDoPrzodu);
+		double[] decyzja = modulDecyzyjny.decyzjaFuzzy2(c, !c.czyWstecznyBieg);
 		c.krok(decyzja);
 		//decyzja = kierowca.decyzjaOSkrecieIZwrocie(this, !czyWstecznyBieg);
 	}

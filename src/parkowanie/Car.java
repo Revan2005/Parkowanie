@@ -23,7 +23,7 @@ public class Car {
 	final double kierunekPoczatkowy = Math.PI*0.5;
 	final double MAX_SKRET_KOL = Math.PI/30.0; //max skret to 45stopni - to niekoniecznie stopnia skretu kola nie uwzgledniam do konca mechaniki pojazdu
 	//stosunek dlugosc szerokosc  i odleglosc od tylu auta do osi tylnych kol ( os obrotu samochodu) taka jak we fiacie punto
-	double rozmiarAuta =1.0;
+	double rozmiarAuta = 1.0;
 	public final Point wymiary = new Point((int)(130*rozmiarAuta), (int)(300*rozmiarAuta)); //zawsze pierwszy wymiar ma byc mniejszy!!!!
 	public final int odleglosc_od_tylu_do_osi = (int)(45*rozmiarAuta);
 	public final int odleglosc_od_przodu_do_osi = wymiary.y-odleglosc_od_tylu_do_osi; //y- dlugosc auta (wiekszy wymiar)
