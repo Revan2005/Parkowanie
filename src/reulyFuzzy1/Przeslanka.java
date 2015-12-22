@@ -34,7 +34,12 @@ public class Przeslanka {
 		return minPrzynaleznosc;
 	}
 	
-	public boolean czySieZapala(int x, int y, double orientacja){
+	public boolean czySieZapala(int x, int y, double orientacja, boolean czyDotychczasDoPrzodu){
+		double doubleCzyDotychczasDoPrzodu;
+		if(czyDotychczasDoPrzodu)
+			doubleCzyDotychczasDoPrzodu = 0;
+		else
+			doubleCzyDotychczasDoPrzodu = -1;
 		FuzzySetLinear1 z;
 		int counter = 0;
 		for(int i = 0; i < zbiory.size(); i++){
@@ -47,6 +52,9 @@ public class Przeslanka {
 					counter++;
 			if( z.zmienna.equals("orientacja") )
 				if( z.getPrzynaleznosc(orientacja) > 0.01 )
+					counter++;
+			if( z.zmienna.equals("zwrot"))
+				if( z.getPrzynaleznosc(doubleCzyDotychczasDoPrzodu) > 0.1 )
 					counter++;
 		}
 		if( counter == zbiory.size() )

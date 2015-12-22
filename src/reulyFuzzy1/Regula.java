@@ -10,8 +10,8 @@ public class Regula {
 		konkluzja = k;
 	}
 	
-	public boolean czySieZapala(int w, int h, double alfa){
-		return przeslanka.czySieZapala(w, h, alfa);
+	public boolean czySieZapala(int w, int h, double alfa, boolean czyDotychczasDoPrzodu){
+		return przeslanka.czySieZapala(w, h, alfa, czyDotychczasDoPrzodu);
 	}
 	
 	public FuzzySetLinear1 getKonkluzjaPrzycieta(int w, int h, double alfa){
