@@ -51,6 +51,7 @@ public class Kierowca implements ActionListener {
 			try {
 				Thread.sleep(100);
 				decyzjaOSkrecieIZwrocieRegulyOstre(samochod, !samochod.czyWstecznyBieg);
+				samochod.printPolozenieToFile();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -64,6 +65,7 @@ public class Kierowca implements ActionListener {
 			try {
 				Thread.sleep(100);
 				decyzjaOSkrecieIZwrocieFuzzy1(samochod, !samochod.czyWstecznyBieg);
+				samochod.printPolozenieToFile();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -76,6 +78,7 @@ public class Kierowca implements ActionListener {
 			try {
 				Thread.sleep(100);
 				decyzjaOSkrecieIZwrocieFuzzy2(samochod, !samochod.czyWstecznyBieg);
+				samochod.printPolozenieToFile();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -14,6 +14,10 @@ import java.awt.event.MouseListener;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 
 import javax.swing.JButton;
 
@@ -23,7 +27,7 @@ public class Car {
 	final double kierunekPoczatkowy = Math.PI*0.5;
 	final double MAX_SKRET_KOL = Math.PI/30.0; //max skret to 45stopni - to niekoniecznie stopnia skretu kola nie uwzgledniam do konca mechaniki pojazdu
 	//stosunek dlugosc szerokosc  i odleglosc od tylu auta do osi tylnych kol ( os obrotu samochodu) taka jak we fiacie punto
-	double rozmiarAuta = 0.5;
+	double rozmiarAuta = 1.0;
 	public final Point wymiary = new Point((int)(130*rozmiarAuta), (int)(300*rozmiarAuta)); //zawsze pierwszy wymiar ma byc mniejszy!!!!
 	public final int odleglosc_od_tylu_do_osi = (int)(45*rozmiarAuta);
 	public final int odleglosc_od_przodu_do_osi = wymiary.y-odleglosc_od_tylu_do_osi; //y- dlugosc auta (wiekszy wymiar)
@@ -392,7 +396,17 @@ public class Car {
 		}
 	}
 
-
+	public void printPolozenieToFile(){
+		try {
+			FileWriter writer = new FileWriter("./trajektorie/trajektoria.txt", true);
+			writer.write("polozenie: " + this.polozenie + ";      xpointsRogow: " + Arrays.toString(this.widok.xpoints) +
+							";         ypointsRogow: " + Arrays.toString(this.widok.ypoints) + "\n");
+			writer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	
 }
