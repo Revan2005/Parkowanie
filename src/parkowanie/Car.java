@@ -27,7 +27,7 @@ public class Car {
 	final double kierunekPoczatkowy = Math.PI*0.5;
 	final double MAX_SKRET_KOL = Math.PI/30.0; //max skret to 45stopni - to niekoniecznie stopnia skretu kola nie uwzgledniam do konca mechaniki pojazdu
 	//stosunek dlugosc szerokosc  i odleglosc od tylu auta do osi tylnych kol ( os obrotu samochodu) taka jak we fiacie punto
-	double rozmiarAuta = 1.0;
+	double rozmiarAuta = 1.1;
 	public final Point wymiary = new Point((int)(130*rozmiarAuta), (int)(300*rozmiarAuta)); //zawsze pierwszy wymiar ma byc mniejszy!!!!
 	public final int odleglosc_od_tylu_do_osi = (int)(45*rozmiarAuta);
 	public final int odleglosc_od_przodu_do_osi = wymiary.y-odleglosc_od_tylu_do_osi; //y- dlugosc auta (wiekszy wymiar)
@@ -399,8 +399,11 @@ public class Car {
 	public void printPolozenieToFile(){
 		try {
 			FileWriter writer = new FileWriter("./trajektorie/trajektoria.txt", true);
-			writer.write("polozenie: " + this.polozenie + ";      xpointsRogow: " + Arrays.toString(this.widok.xpoints) +
-							";         ypointsRogow: " + Arrays.toString(this.widok.ypoints) + "\n");
+			writer.write(this.polozenie.x + " " + this.polozenie.y + " " +
+					 	 this.widok.xpoints[0] + " " + this.widok.xpoints[1] + " " + this.widok.xpoints[2] + " " + this.widok.xpoints[3] + " " +
+					 	 this.widok.ypoints[0] + " " + this.widok.ypoints[1] + " " + this.widok.ypoints[2] + " " + this.widok.ypoints[3] + "\n");
+			//writer.write("polozenie: " + this.polozenie + ";      xpointsRogow: " + Arrays.toString(this.widok.xpoints) +
+			//				";         ypointsRogow: " + Arrays.toString(this.widok.ypoints) + "\n");
 			writer.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

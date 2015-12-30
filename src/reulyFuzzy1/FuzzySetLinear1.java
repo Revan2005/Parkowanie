@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import parkowanie.Punkt2D;
 
 public class FuzzySetLinear1 {
-	ArrayList<Punkt2D> wierzcholki;
-	String zmienna;
-	String nazwa = "";
+	public ArrayList<Punkt2D> wierzcholki;
+	public String zmienna;
+	public String nazwa = "";
 	
 	public FuzzySetLinear1(){
 		zmienna = "pusty";
@@ -341,7 +341,7 @@ public class FuzzySetLinear1 {
 	}
 	
 	public void piszDoPliku() {
-		File plik = new File("/home/tomek/workspace/obliczeniaMiekkie/OperacjeNaZbiorachRozmytych/plots/zbiorRozmyty.dat");
+		File plik = new File("/home/tomek/PROJEKTY/ObliczeniaMiekkie/Parkowanie/podgladZbiorowRozmytych/zbiorRozmyty.dat");
 		try {
 			PrintWriter writer = new PrintWriter(plik);
 			writer.write("# x y"+"\n");
@@ -357,7 +357,7 @@ public class FuzzySetLinear1 {
 	}
 	
 	public void piszDoPliku(String nazwa) {
-		File plik = new File("/home/tomek/workspace/obliczeniaMiekkie/OperacjeNaZbiorachRozmytych/plots/"+nazwa+".dat");
+		File plik = new File("/home/tomek/PROJEKTY/ObliczeniaMiekkie/Parkowanie/podgladZbiorowRozmytych/"+nazwa+".dat");
 		try {
 			PrintWriter writer = new PrintWriter(plik);
 			writer.write("# x y"+"\n");

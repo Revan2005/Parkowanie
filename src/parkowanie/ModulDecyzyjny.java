@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 import reulyFuzzy1.RegulyFuzzy1;
+import regulyFuzzy2.RegulyFuzzy2;
 
 
 public class ModulDecyzyjny {
@@ -23,6 +24,7 @@ public class ModulDecyzyjny {
 	int x0, y0;
 	int xSrodkaParkingu, ySrodkaParkingu;
 	RegulyFuzzy1 regulyFuzzy1;
+	RegulyFuzzy2 regulyFuzzy2;
 	
 	
 	public ModulDecyzyjny(Car c, ModelOtoczenia model){
@@ -39,12 +41,13 @@ public class ModulDecyzyjny {
 		wysokoscMiejscaParkingowego = modelOtoczenia.wysokoscMiejscaParkingowego;
 		
 		regulyFuzzy1 = new RegulyFuzzy1(samochod, modelOtoczenia);
+		regulyFuzzy2 = new RegulyFuzzy2(samochod, modelOtoczenia);
 		//czujnik = new Czujnik(c, mapaParkingu);
 		//System.out.println(mapaParkingu.toString());
 		//bedzie sie staral umiescic srodek tylnej osi - polozenie, na srodku zielonego pola
 		//lokalizuje zielone, zakladam ze pole do parkowania to prostokat z bokami rownoleglymi do osi parkingu
 		
-		int x1 = samochod.polozenie.x, y1 = samochod.polozenie.y;
+		//int x1 = samochod.polozenie.x, y1 = samochod.polozenie.y;
 		//int x2 = centrumMiejscaParkingowego.x, y2 = centrumMiejscaParkingowego.y;
 		
 		//System.out.println("x1="+x1+" y1="+y1+" x2="+x2+" y2="+y2);
@@ -65,7 +68,7 @@ public class ModulDecyzyjny {
 		y0 = modelOtoczenia.y0;
 		//czujnik = new Czujnik(samochod, mapaParkingu);
 		
-		int x1 = samochod.polozenie.x, y1 = samochod.polozenie.y;
+		//int x1 = samochod.polozenie.x, y1 = samochod.polozenie.y;
 		//int x2 = centrumMiejscaParkingowego.x, y2 = centrumMiejscaParkingowego.y;
 		//xSrodkaParkingu = x2; ySrodkaParkingu = y2;
 		//System.out.println("x1="+x1+" y1="+y1+" x2="+x2+" y2="+y2);
@@ -166,7 +169,11 @@ public class ModulDecyzyjny {
 	}
 	
 	public double[] decyzjaFuzzy2(Car c, boolean dotychczasDoPrzodu){
-		xSamochodu = c.polozenie.x;
+		
+		double[] decyzja = regulyFuzzy2.podejmijDecyzje(c, dotychczasDoPrzodu);
+		return decyzja;
+		
+		/*xSamochodu = c.polozenie.x;
 		ySamochodu = c.polozenie.y;
 		orientacjaSamochodu = c.kierunek;
 		//czujnik = new Czujnik(c, mapaParkingu);
@@ -189,7 +196,7 @@ public class ModulDecyzyjny {
 		double[] decyzja = new double[2];
 		decyzja[0] = skretKol; // kierunek
 		decyzja[1] = przodTyl; //0 do przodu, cokolwiek innego do tylu
-		return decyzja;
+		return decyzja;*/
 	}
 	
 	public double roznicaKierunkow(){
