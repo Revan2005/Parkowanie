@@ -527,7 +527,7 @@ public class RegulyFuzzy2 {
 	private double skretDefuzzyfication(FuzzySetLinear2 zbior){
 		zbior.piszDoPlikow("dolnaFunkcjaPrzynaleznosci", "gornaFunkcjaPrzynaleznosci");
 		//ten return trzeba zmienic teraz dziala tak jak pryz logice typu 1
-		return getSkretZMaxPrzynaleznoscia(zbior.dolnaFunkcjaPrzynaleznosci);
+		//return getSkretZMaxPrzynaleznoscia(zbior.dolnaFunkcjaPrzynaleznosci);
 		//return getSkretZMaxPrzynaleznoscia(zbior.gornaFunkcjaPrzynaleznosci);
 		//return ( getSkretZMaxPrzynaleznoscia(zbior.gornaFunkcjaPrzynaleznosci) + getSkretZMaxPrzynaleznoscia(zbior.gornaFunkcjaPrzynaleznosci) ) / 2.0;
 
@@ -543,12 +543,15 @@ public class RegulyFuzzy2 {
 		//roznica pojawia sie wg slajdow dopiero na tym etapie do tej pory 
 		//szly 2 rownolegle systemy typu 1 (kazdy moj zbior rozmyty typu 2 sklada sie z 2 zbiorow typu 1 - gornej i dolnej fkcji przynaleznosci)
 		
-		
-		
-		
-		
+		if(zbior.nazwa.equals(""))
+			return 0;
+		else {
+			Defuzzyfication defuzzyfication = new Defuzzyfication(zbior);
+			return defuzzyfication.getResult();
+		}
 	}
-	
+
+	/*
 	//@to nizej jest do wyrzucenia!!!!
 	private double getSkretZMaxPrzynaleznoscia(FuzzySetLinear1 zbior){
 		double maxPrzynaleznosc = 0 , skret = 0;
@@ -560,6 +563,7 @@ public class RegulyFuzzy2 {
 		}
 		return skret;
 	}
+	*/
 	
 	
 	//koniec ================================================================================================================================================
