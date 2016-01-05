@@ -12,7 +12,7 @@ public class RegulyFuzzy1 {
 	int h;
 	double orientacjaSamochodu;
 	Point polozenieSamochodu;
-	double PROG_PRZYNALEZNOSCI_WYMAGANEJ_DO_ZMIANY_ZWROTU = 0.1;
+	double PROG_PRZYNALEZNOSCI_WYMAGANEJ_DO_ZMIANY_ZWROTU = 0.01;
 	
 	//moje zbiory rozmyte
 	//zwrot
@@ -151,13 +151,17 @@ public class RegulyFuzzy1 {
 		orientacjaBardzoPrawo = new FuzzySetLinear1( wierzcholki13,"orientacja", "orientacjaBardzoPrawo" );
 		//Zbiory na wyjsciu - konkluzje implikacji, narazie niech beda tylko 2 prawo i lewo
 		//max skret na wyjsciu to bedzie +/- Math.Pi/45
+		//zamieniam zeby bylo tak jak pry rozmytych typu 2 tzn zbior prawo nie idzie od zera do plus infinity tylko od zera przez max w punkcie
+		//pi/45 i maleje do 2pi/45
 		//1
 		ArrayList<Punkt2D> wierzcholki14 = new ArrayList<Punkt2D>();
 		wierzcholki14.add(new Punkt2D( 0, 0 ));
 		wierzcholki14.add(new Punkt2D( Math.PI/45.0, 1 ));
+		wierzcholki14.add(new Punkt2D( 2.0*Math.PI/45.0, 0 )); //dopisane
 		skrecPrawo = new FuzzySetLinear1(wierzcholki14, "skret", "skrecPrawo" );
 		//2
 		ArrayList<Punkt2D> wierzcholki15 = new ArrayList<Punkt2D>();
+		wierzcholki15.add(new Punkt2D( -2.0*Math.PI/45.0, 0 )); //dopisane
 		wierzcholki15.add(new Punkt2D( -Math.PI/45.0, 1 ));
 		wierzcholki15.add(new Punkt2D( 0, 0 ));
 		skrecLewo = new FuzzySetLinear1(wierzcholki15, "skret", "skrecLewo" );
@@ -247,16 +251,15 @@ public class RegulyFuzzy1 {
 		*/
 		//============================================================================================================
 		//DLA COFANIA
-		//jesli jestes posrodku i wysoko to skrec kola w prawo
+		//jesli jestes po prawej i wysoko to skrec kola w prawo
 		listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear1>();
-		listaZbiorowDoPrzeslanki.add(polozenieSrodek);
-		//listaZbiorowDoPrzeslanki.add(hWysoko);
+		listaZbiorowDoPrzeslanki.add(polozeniePrawo);
+		listaZbiorowDoPrzeslanki.add(hWysoko);
 		listaZbiorowDoPrzeslanki.add(zwrotCofaj);
 		przeslanka = new Przeslanka(listaZbiorowDoPrzeslanki);
 		regula = new Regula(przeslanka, skrecPrawo);
 		listaRegul.add(regula);
-		/*
-		//jesli jestes sredniowysoko to krec w prawo
+		//jesli jestes sredniowysoko to krec w lewo
 		listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear1>();
 		listaZbiorowDoPrzeslanki.add(hSrednio);
 		listaZbiorowDoPrzeslanki.add(polozenieSrodek);
@@ -268,10 +271,19 @@ public class RegulyFuzzy1 {
 		listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear1>();
 		listaZbiorowDoPrzeslanki.add(hSrednio);
 		listaZbiorowDoPrzeslanki.add(polozenieLewo);
+		listaZbiorowDoPrzeslanki.add(orientacjaLewo);
 		listaZbiorowDoPrzeslanki.add(zwrotCofaj);
 		przeslanka = new Przeslanka(listaZbiorowDoPrzeslanki);
-		regula = new Regula(przeslanka, skrecPrawo);
+		regula = new Regula(przeslanka, skrecLewo);
 		listaRegul.add(regula);
+		//jezeli orientacja lewo to odbij w przeciwna
+		listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear1>();
+		listaZbiorowDoPrzeslanki.add(orientacjaBardzoLewo);
+		listaZbiorowDoPrzeslanki.add(zwrotCofaj);
+		przeslanka = new Przeslanka(listaZbiorowDoPrzeslanki);
+		regula = new Regula(przeslanka, skrecLewo);
+		listaRegul.add(regula);
+		/*
 		//jesli jestes na prawo i orientacja prosto to skrec w lewo
 		listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear1>();
 		listaZbiorowDoPrzeslanki.add(polozeniePrawo);
@@ -280,15 +292,17 @@ public class RegulyFuzzy1 {
 		przeslanka = new Przeslanka(listaZbiorowDoPrzeslanki);
 		regula = new Regula(przeslanka, skrecPrawo);
 		listaRegul.add(regula);
+		*/
 		//DLA JAZDY DO PRZODU
-		//jesli jestes posrodku i wysoko to skrec kola w prawo
+		//jesli jestes posrodku i orientacjalewo to skrec kola w prawo
 		listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear1>();
 		listaZbiorowDoPrzeslanki.add(polozenieSrodek);
-		listaZbiorowDoPrzeslanki.add(hWysoko);
+		listaZbiorowDoPrzeslanki.add(orientacjaLewo);
 		listaZbiorowDoPrzeslanki.add(zwrotNaprzod);
 		przeslanka = new Przeslanka(listaZbiorowDoPrzeslanki);
 		regula = new Regula(przeslanka, skrecPrawo);
 		listaRegul.add(regula);
+		/*
 		//jesli jestes sredniowysoko to krec w prawo
 		listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear1>();
 		listaZbiorowDoPrzeslanki.add(hSrednio);
@@ -323,17 +337,17 @@ public class RegulyFuzzy1 {
 		regula = new Regula(przeslanka, cofaj);
 		listaRegul.add(regula);
 		//jesli jestes bardzo na lewo to jedz do przodu 
-		//listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear1>();
-		//listaZbiorowDoPrzeslanki.add(polozenieBardzoLewo);
-		//przeslanka = new Przeslanka(listaZbiorowDoPrzeslanki);
-		//regula = new Regula(przeslanka, jedzNaprzod);
-		//listaRegul.add(regula);
+		listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear1>();
+		listaZbiorowDoPrzeslanki.add(polozenieBardzoLewo);
+		przeslanka = new Przeslanka(listaZbiorowDoPrzeslanki);
+		regula = new Regula(przeslanka, jedzNaprzod);
+		listaRegul.add(regula);
 		//jezeli jestes nisko to jedz d oprzodu
-		//listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear1>();
-		//listaZbiorowDoPrzeslanki.add(hNisko);
-		//przeslanka = new Przeslanka(listaZbiorowDoPrzeslanki);
-		//regula = new Regula(przeslanka, jedzNaprzod);
-		//listaRegul.add(regula);
+		listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear1>();
+		listaZbiorowDoPrzeslanki.add(hNisko);
+		przeslanka = new Przeslanka(listaZbiorowDoPrzeslanki);
+		regula = new Regula(przeslanka, jedzNaprzod);
+		listaRegul.add(regula);
 		/*
 		//test nowych skretow i zbiorow naprzod cofaj
 		//jezeli cofasz to skrec w prawo

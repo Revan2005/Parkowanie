@@ -19,9 +19,9 @@ public class RegulyFuzzy2 {
 	int h;
 	double orientacjaSamochodu;
 	Point polozenieSamochodu;
-	double PROG_PRZYNALEZNOSCI_WYMAGANEJ_DO_ZMIANY_ZWROTU = 0.1;
+	double PROG_PRZYNALEZNOSCI_WYMAGANEJ_DO_ZMIANY_ZWROTU = 0.01;
 	
-	double wspolczynnikSzerokosci = 0.1;
+	double wspolczynnikSzerokosci = 0.03;
 	
 	//moje zbiory rozmyte typu 2
 	//zwrot
@@ -101,7 +101,7 @@ public class RegulyFuzzy2 {
 		wierzcholki2dol.add(new Punkt2D( ( zeroZero.x + 0.5*w - (c.odleglosc_od_przodu_do_osi - c.wymiary.getY()/2) ) + w*wspolczynnikSzerokosci, 0 ));
 		wierzcholki2dol.add(new Punkt2D( (zeroZero.x + w -R), 1 ));
 		wierzcholki2dol.add(new Punkt2D( (zeroZero.x + w) - w*wspolczynnikSzerokosci, 0 ));
-		FuzzySetLinear1 polozeniePrawoDol = new FuzzySetLinear1( wierzcholki2gora, "x" );
+		FuzzySetLinear1 polozeniePrawoDol = new FuzzySetLinear1( wierzcholki2dol, "x" );
 		polozeniePrawo = new FuzzySetLinear2(polozeniePrawoDol, polozeniePrawoGora);
 		//3
 		ArrayList<Punkt2D> wierzcholki3gora = new ArrayList<Punkt2D>();
@@ -234,6 +234,7 @@ public class RegulyFuzzy2 {
 		//Zbiory na wyjsciu - konkluzje implikacji, narazie niech beda tylko 2 prawo i lewo
 		//max skret na wyjsciu to bedzie +/- Math.Pi/45
 		//1
+		/*zmodyfikuje te zbiory zeby byly trojkatne a nie nieskonczone:
 		ArrayList<Punkt2D> wierzcholki14gora = new ArrayList<Punkt2D>();
 		wierzcholki14gora.add(new Punkt2D( 0 - (Math.PI/45.0)*wspolczynnikSzerokosci, 0 ));
 		wierzcholki14gora.add(new Punkt2D( Math.PI/45.0, 1 ));
@@ -251,6 +252,31 @@ public class RegulyFuzzy2 {
 		ArrayList<Punkt2D> wierzcholki15dol = new ArrayList<Punkt2D>();
 		wierzcholki15dol.add(new Punkt2D( -Math.PI/45.0, 1 ));
 		wierzcholki15dol.add(new Punkt2D( 0 - (Math.PI/45.0)*wspolczynnikSzerokosci, 0 ));
+		FuzzySetLinear1 skrecLewoDol = new FuzzySetLinear1(wierzcholki15dol, "skret", "skrecLewo" );
+		skrecLewo = new FuzzySetLinear2(skrecLewoDol, skrecLewoGora);
+		*/
+		double wspolczynnikSzerokosciZbiorowWyjsciowych = 0.3;
+		ArrayList<Punkt2D> wierzcholki14gora = new ArrayList<Punkt2D>();
+		wierzcholki14gora.add(new Punkt2D( 0 - (Math.PI/45.0)*wspolczynnikSzerokosciZbiorowWyjsciowych, 0 ));
+		wierzcholki14gora.add(new Punkt2D( Math.PI/45.0, 1 ));
+		wierzcholki14gora.add(new Punkt2D( 2.0*Math.PI/45.0 + (Math.PI/45.0)*wspolczynnikSzerokosciZbiorowWyjsciowych, 0 ));
+		FuzzySetLinear1 skrecPrawoGora = new FuzzySetLinear1(wierzcholki14gora, "skret", "skrecPrawo" );
+		ArrayList<Punkt2D> wierzcholki14dol = new ArrayList<Punkt2D>();
+		wierzcholki14dol.add(new Punkt2D( 0 + (Math.PI/45.0)*wspolczynnikSzerokosciZbiorowWyjsciowych, 0 ));
+		wierzcholki14dol.add(new Punkt2D( Math.PI/45.0, 1 ));
+		wierzcholki14dol.add(new Punkt2D( 2.0*Math.PI/45.0 - (Math.PI/45.0)*wspolczynnikSzerokosciZbiorowWyjsciowych, 0 ));
+		FuzzySetLinear1 skrecPrawoDol = new FuzzySetLinear1(wierzcholki14dol, "skret", "skrecPrawo" );
+		skrecPrawo = new FuzzySetLinear2(skrecPrawoDol, skrecPrawoGora);
+		//2
+		ArrayList<Punkt2D> wierzcholki15gora = new ArrayList<Punkt2D>();
+		wierzcholki15gora.add(new Punkt2D( - 2.0*Math.PI/45.0 - (Math.PI/45.0)*wspolczynnikSzerokosciZbiorowWyjsciowych, 0 ));
+		wierzcholki15gora.add(new Punkt2D( -Math.PI/45.0, 1 ));
+		wierzcholki15gora.add(new Punkt2D( 0 + (Math.PI/45.0)*wspolczynnikSzerokosciZbiorowWyjsciowych, 0 ));
+		FuzzySetLinear1 skrecLewoGora = new FuzzySetLinear1(wierzcholki15gora, "skret", "skrecLewo" );
+		ArrayList<Punkt2D> wierzcholki15dol = new ArrayList<Punkt2D>();
+		wierzcholki15dol.add(new Punkt2D( - 2.0*Math.PI/45.0 + (Math.PI/45.0)*wspolczynnikSzerokosciZbiorowWyjsciowych, 0 ));
+		wierzcholki15dol.add(new Punkt2D( -Math.PI/45.0, 1 ));
+		wierzcholki15dol.add(new Punkt2D( 0 - (Math.PI/45.0)*wspolczynnikSzerokosciZbiorowWyjsciowych, 0 ));
 		FuzzySetLinear1 skrecLewoDol = new FuzzySetLinear1(wierzcholki15dol, "skret", "skrecLewo" );
 		skrecLewo = new FuzzySetLinear2(skrecLewoDol, skrecLewoGora);
 		//zbiory na wyjsciu dotyczace zwrotu przod tyl, -1 cofaj, 0 i wiecej - jedz do przodu
@@ -274,6 +300,7 @@ public class RegulyFuzzy2 {
 		ArrayList<FuzzySetLinear2> listaZbiorowDoPrzeslanki;
 		PrzeslankaTypu2 przeslanka;
 		RegulaTypu2 regula;
+		/*
 		// 1-wsza regula
 		listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear2>();
 		listaZbiorowDoPrzeslanki.add(polozenieSrodek);
@@ -287,6 +314,68 @@ public class RegulyFuzzy2 {
 		listaZbiorowDoPrzeslanki.add(polozenieBardzoPrawo);
 		przeslanka = new PrzeslankaTypu2(listaZbiorowDoPrzeslanki);
 		regula = new RegulaTypu2(przeslanka, cofaj);
+		listaRegul.add(regula);
+		*/
+		//DLA COFANIA
+		//jesli jestes po prawej i wysoko to skrec kola w prawo
+		listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear2>();
+		listaZbiorowDoPrzeslanki.add(polozeniePrawo);
+		listaZbiorowDoPrzeslanki.add(hWysoko);
+		listaZbiorowDoPrzeslanki.add(zwrotCofaj);
+		przeslanka = new PrzeslankaTypu2(listaZbiorowDoPrzeslanki);
+		regula = new RegulaTypu2(przeslanka, skrecPrawo);
+		listaRegul.add(regula);
+		//jesli jestes sredniowysoko to krec w lewo
+		listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear2>();
+		listaZbiorowDoPrzeslanki.add(hSrednio);
+		listaZbiorowDoPrzeslanki.add(polozenieSrodek);
+		listaZbiorowDoPrzeslanki.add(zwrotCofaj);
+		przeslanka = new PrzeslankaTypu2(listaZbiorowDoPrzeslanki);
+		regula = new RegulaTypu2(przeslanka, skrecLewo);
+		listaRegul.add(regula);
+		//jesli jestes sredniowysoko i po lewej to krec w lewo
+		listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear2>();
+		listaZbiorowDoPrzeslanki.add(hSrednio);
+		listaZbiorowDoPrzeslanki.add(polozenieLewo);
+		listaZbiorowDoPrzeslanki.add(orientacjaLewo);
+		listaZbiorowDoPrzeslanki.add(zwrotCofaj);
+		przeslanka = new PrzeslankaTypu2(listaZbiorowDoPrzeslanki);
+		regula = new RegulaTypu2(przeslanka, skrecLewo);
+		listaRegul.add(regula);
+		//jezeli orientacja lewo to odbij w przeciwna
+		listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear2>();
+		listaZbiorowDoPrzeslanki.add(orientacjaBardzoLewo);
+		listaZbiorowDoPrzeslanki.add(zwrotCofaj);
+		przeslanka = new PrzeslankaTypu2(listaZbiorowDoPrzeslanki);
+		regula = new RegulaTypu2(przeslanka, skrecLewo);
+		listaRegul.add(regula);
+		//DLA JAZDY DO PRZODU
+		//jesli jestes posrodku i orientacjalewo to skrec kola w prawo
+		listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear2>();
+		listaZbiorowDoPrzeslanki.add(polozenieSrodek);
+		listaZbiorowDoPrzeslanki.add(orientacjaLewo);
+		listaZbiorowDoPrzeslanki.add(zwrotNaprzod);
+		przeslanka = new PrzeslankaTypu2(listaZbiorowDoPrzeslanki);
+		regula = new RegulaTypu2(przeslanka, skrecPrawo);
+		listaRegul.add(regula);
+		//osobno dla ruchu
+		//jesli jestes bardzo na prawo to cofaj 
+		listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear2>();
+		listaZbiorowDoPrzeslanki.add(polozenieBardzoPrawo);
+		przeslanka = new PrzeslankaTypu2(listaZbiorowDoPrzeslanki);
+		regula = new RegulaTypu2(przeslanka, cofaj);
+		listaRegul.add(regula);
+		//jesli jestes bardzo na lewo to jedz do przodu 
+		listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear2>();
+		listaZbiorowDoPrzeslanki.add(polozenieBardzoLewo);
+		przeslanka = new PrzeslankaTypu2(listaZbiorowDoPrzeslanki);
+		regula = new RegulaTypu2(przeslanka, jedzNaprzod);
+		listaRegul.add(regula);
+		//jezeli jestes nisko to jedz d oprzodu
+		listaZbiorowDoPrzeslanki = new ArrayList<FuzzySetLinear2>();
+		listaZbiorowDoPrzeslanki.add(hNisko);
+		przeslanka = new PrzeslankaTypu2(listaZbiorowDoPrzeslanki);
+		regula = new RegulaTypu2(przeslanka, jedzNaprzod);
 		listaRegul.add(regula);
 	
 	}
@@ -438,20 +527,26 @@ public class RegulyFuzzy2 {
 	private double skretDefuzzyfication(FuzzySetLinear2 zbior){
 		zbior.piszDoPlikow("dolnaFunkcjaPrzynaleznosci", "gornaFunkcjaPrzynaleznosci");
 		//ten return trzeba zmienic teraz dziala tak jak pryz logice typu 1
-		return getSkretZMaxPrzynaleznoscia(zbior.gornaFunkcjaPrzynaleznosci);
+		return getSkretZMaxPrzynaleznoscia(zbior.dolnaFunkcjaPrzynaleznosci);
+		//return getSkretZMaxPrzynaleznoscia(zbior.gornaFunkcjaPrzynaleznosci);
+		//return ( getSkretZMaxPrzynaleznoscia(zbior.gornaFunkcjaPrzynaleznosci) + getSkretZMaxPrzynaleznoscia(zbior.gornaFunkcjaPrzynaleznosci) ) / 2.0;
+
+		//podejrzewam ze tak to bedzie dzialalo z symetrii
+		/*
+		if(zbior.nazwa.equals("skrecPrawo"))
+			return Math.PI/45.0;
+		if(zbior.nazwa.equals("skrecLewo"))
+			return Math.PI/45.0;
+		return 0;
+		*/
 		//tu sie odbedzie cala wyprawa -redukcja typu i obliczanie centroidu przedzialu
 		//roznica pojawia sie wg slajdow dopiero na tym etapie do tej pory 
 		//szly 2 rownolegle systemy typu 1 (kazdy moj zbior rozmyty typu 2 sklada sie z 2 zbiorow typu 1 - gornej i dolnej fkcji przynaleznosci)
 		
 		
-		/*double maxPrzynaleznosc = 0 , skret = 0;
-		for(int i = 0; i < zbior.wierzcholki.size(); i++){
-			if(zbior.wierzcholki.get(i).y > maxPrzynaleznosc){
-				maxPrzynaleznosc = zbior.wierzcholki.get(i).y;
-				skret = zbior.wierzcholki.get(i).x;
-			}
-		}
-		return skret;*/
+		
+		
+		
 	}
 	
 	//@to nizej jest do wyrzucenia!!!!
@@ -465,7 +560,7 @@ public class RegulyFuzzy2 {
 		}
 		return skret;
 	}
-
+	
 	
 	//koniec ================================================================================================================================================
 
