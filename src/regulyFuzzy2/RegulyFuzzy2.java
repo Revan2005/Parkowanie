@@ -82,12 +82,13 @@ public class RegulyFuzzy2 {
 		//prawolewo
 		//==============================================================
 		//1
+		final double WSPOLCZYNNIK_BEZPIECZENSTWA = 10;
 		ArrayList<Punkt2D> wierzcholki1gora = new ArrayList<Punkt2D>();
-		wierzcholki1gora.add( new Punkt2D( (zeroZero.x + w -R) - w*wspolczynnikSzerokosci, 0 ) );
+		wierzcholki1gora.add( new Punkt2D( (zeroZero.x + w -R - WSPOLCZYNNIK_BEZPIECZENSTWA) - w*wspolczynnikSzerokosci, 0 ) );
 		wierzcholki1gora.add( new Punkt2D( (zeroZero.x + w), 1 ) );
 		FuzzySetLinear1 polozenieBardzoPrawoGora = new FuzzySetLinear1( wierzcholki1gora, "x" );
 		ArrayList<Punkt2D> wierzcholki1dol = new ArrayList<Punkt2D>();
-		wierzcholki1dol.add( new Punkt2D( (zeroZero.x + w -R) + w*wspolczynnikSzerokosci, 0 ) );
+		wierzcholki1dol.add( new Punkt2D( (zeroZero.x + w -R - WSPOLCZYNNIK_BEZPIECZENSTWA) + w*wspolczynnikSzerokosci, 0 ) );
 		wierzcholki1dol.add( new Punkt2D( (zeroZero.x + w), 1 ) );
 		FuzzySetLinear1 polozenieBardzoPrawoDol = new FuzzySetLinear1( wierzcholki1dol, "x" );
 		polozenieBardzoPrawo = new FuzzySetLinear2(polozenieBardzoPrawoDol, polozenieBardzoPrawoGora);
@@ -256,27 +257,28 @@ public class RegulyFuzzy2 {
 		skrecLewo = new FuzzySetLinear2(skrecLewoDol, skrecLewoGora);
 		*/
 		double wspolczynnikSzerokosciZbiorowWyjsciowych = 0.3;
+		final double MAX_SKRET = Math.PI/90.0;
 		ArrayList<Punkt2D> wierzcholki14gora = new ArrayList<Punkt2D>();
-		wierzcholki14gora.add(new Punkt2D( 0 - (Math.PI/45.0)*wspolczynnikSzerokosciZbiorowWyjsciowych, 0 ));
-		wierzcholki14gora.add(new Punkt2D( Math.PI/45.0, 1 ));
-		wierzcholki14gora.add(new Punkt2D( 2.0*Math.PI/45.0 + (Math.PI/45.0)*wspolczynnikSzerokosciZbiorowWyjsciowych, 0 ));
+		wierzcholki14gora.add(new Punkt2D( 0 - MAX_SKRET*wspolczynnikSzerokosciZbiorowWyjsciowych, 0 ));
+		wierzcholki14gora.add(new Punkt2D( MAX_SKRET, 1 ));
+		wierzcholki14gora.add(new Punkt2D( 2.0*MAX_SKRET + MAX_SKRET*wspolczynnikSzerokosciZbiorowWyjsciowych, 0 ));
 		FuzzySetLinear1 skrecPrawoGora = new FuzzySetLinear1(wierzcholki14gora, "skret", "skrecPrawo" );
 		ArrayList<Punkt2D> wierzcholki14dol = new ArrayList<Punkt2D>();
-		wierzcholki14dol.add(new Punkt2D( 0 + (Math.PI/45.0)*wspolczynnikSzerokosciZbiorowWyjsciowych, 0 ));
-		wierzcholki14dol.add(new Punkt2D( Math.PI/45.0, 1 ));
-		wierzcholki14dol.add(new Punkt2D( 2.0*Math.PI/45.0 - (Math.PI/45.0)*wspolczynnikSzerokosciZbiorowWyjsciowych, 0 ));
+		wierzcholki14dol.add(new Punkt2D( 0 + MAX_SKRET*wspolczynnikSzerokosciZbiorowWyjsciowych, 0 ));
+		wierzcholki14dol.add(new Punkt2D( MAX_SKRET, 1 ));
+		wierzcholki14dol.add(new Punkt2D( 2.0*MAX_SKRET - MAX_SKRET*wspolczynnikSzerokosciZbiorowWyjsciowych, 0 ));
 		FuzzySetLinear1 skrecPrawoDol = new FuzzySetLinear1(wierzcholki14dol, "skret", "skrecPrawo" );
 		skrecPrawo = new FuzzySetLinear2(skrecPrawoDol, skrecPrawoGora);
 		//2
 		ArrayList<Punkt2D> wierzcholki15gora = new ArrayList<Punkt2D>();
-		wierzcholki15gora.add(new Punkt2D( - 2.0*Math.PI/45.0 - (Math.PI/45.0)*wspolczynnikSzerokosciZbiorowWyjsciowych, 0 ));
-		wierzcholki15gora.add(new Punkt2D( -Math.PI/45.0, 1 ));
-		wierzcholki15gora.add(new Punkt2D( 0 + (Math.PI/45.0)*wspolczynnikSzerokosciZbiorowWyjsciowych, 0 ));
+		wierzcholki15gora.add(new Punkt2D( - 2.0*MAX_SKRET - MAX_SKRET*wspolczynnikSzerokosciZbiorowWyjsciowych, 0 ));
+		wierzcholki15gora.add(new Punkt2D( -MAX_SKRET, 1 ));
+		wierzcholki15gora.add(new Punkt2D( 0 + MAX_SKRET*wspolczynnikSzerokosciZbiorowWyjsciowych, 0 ));
 		FuzzySetLinear1 skrecLewoGora = new FuzzySetLinear1(wierzcholki15gora, "skret", "skrecLewo" );
 		ArrayList<Punkt2D> wierzcholki15dol = new ArrayList<Punkt2D>();
-		wierzcholki15dol.add(new Punkt2D( - 2.0*Math.PI/45.0 + (Math.PI/45.0)*wspolczynnikSzerokosciZbiorowWyjsciowych, 0 ));
-		wierzcholki15dol.add(new Punkt2D( -Math.PI/45.0, 1 ));
-		wierzcholki15dol.add(new Punkt2D( 0 - (Math.PI/45.0)*wspolczynnikSzerokosciZbiorowWyjsciowych, 0 ));
+		wierzcholki15dol.add(new Punkt2D( - 2.0*MAX_SKRET + MAX_SKRET*wspolczynnikSzerokosciZbiorowWyjsciowych, 0 ));
+		wierzcholki15dol.add(new Punkt2D( -MAX_SKRET, 1 ));
+		wierzcholki15dol.add(new Punkt2D( 0 - MAX_SKRET*wspolczynnikSzerokosciZbiorowWyjsciowych, 0 ));
 		FuzzySetLinear1 skrecLewoDol = new FuzzySetLinear1(wierzcholki15dol, "skret", "skrecLewo" );
 		skrecLewo = new FuzzySetLinear2(skrecLewoDol, skrecLewoGora);
 		//zbiory na wyjsciu dotyczace zwrotu przod tyl, -1 cofaj, 0 i wiecej - jedz do przodu

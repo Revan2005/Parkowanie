@@ -154,15 +154,16 @@ public class RegulyFuzzy1 {
 		//zamieniam zeby bylo tak jak pry rozmytych typu 2 tzn zbior prawo nie idzie od zera do plus infinity tylko od zera przez max w punkcie
 		//pi/45 i maleje do 2pi/45
 		//1
+		final double MAX_SKRET = Math.PI/90.0;
 		ArrayList<Punkt2D> wierzcholki14 = new ArrayList<Punkt2D>();
 		wierzcholki14.add(new Punkt2D( 0, 0 ));
-		wierzcholki14.add(new Punkt2D( Math.PI/45.0, 1 ));
-		wierzcholki14.add(new Punkt2D( 2.0*Math.PI/45.0, 0 )); //dopisane
+		wierzcholki14.add(new Punkt2D( MAX_SKRET, 1 ));
+		wierzcholki14.add(new Punkt2D( 2.0*MAX_SKRET, 0 )); //dopisane
 		skrecPrawo = new FuzzySetLinear1(wierzcholki14, "skret", "skrecPrawo" );
 		//2
 		ArrayList<Punkt2D> wierzcholki15 = new ArrayList<Punkt2D>();
-		wierzcholki15.add(new Punkt2D( -2.0*Math.PI/45.0, 0 )); //dopisane
-		wierzcholki15.add(new Punkt2D( -Math.PI/45.0, 1 ));
+		wierzcholki15.add(new Punkt2D( -2.0*MAX_SKRET, 0 )); //dopisane
+		wierzcholki15.add(new Punkt2D( -MAX_SKRET, 1 ));
 		wierzcholki15.add(new Punkt2D( 0, 0 ));
 		skrecLewo = new FuzzySetLinear1(wierzcholki15, "skret", "skrecLewo" );
 		//zbiory na wyjsciu dotyczace zwrotu przod tyl, -1 cofaj, 0 i wiecej - jedz do przodu
@@ -592,11 +593,49 @@ public class RegulyFuzzy1 {
 			zwrot = -1;
 		}
 		zbiorKierunek.piszDoPliku("regulyTypu1Skret");
-		skret = getSkretZMaxPrzynaleznoscia(zbiorKierunek);
+		if(zbiorKierunek.nazwa.equals(""))
+			skret = 0;
+		else
+			skret = skretCentreOfGravityDefuzzyfication(zbiorKierunek);
 		double[] result = { skret, zwrot };
 		return result;
 	}
 	
+	private double skretCentreOfGravityDefuzzyfication(FuzzySetLinear1 zbior){
+		double[] punktyDyskretyzacji = getPunktyDyskretyzacji(zbior);
+		double licznik = 0;
+		double mianownik = 0;
+		double srodekCiezkosci = 0;
+		double x;
+		double przynaleznosc;
+		for(int i = 0; i < punktyDyskretyzacji.length; i++){
+			x = punktyDyskretyzacji[i];
+			przynaleznosc = zbior.getPrzynaleznosc(x);
+			licznik += x * przynaleznosc;
+			mianownik += przynaleznosc;
+		}
+		srodekCiezkosci = licznik / mianownik;
+		return srodekCiezkosci;
+	}
+	
+	private double[] getPunktyDyskretyzacji(FuzzySetLinear1 zbior){
+		int liczbaPuktow = 100;
+		double[] punkty = new double[liczbaPuktow];
+		double min = zbior.wierzcholki.get(0).x;
+		double max = zbior.wierzcholki.get(zbior.wierzcholki.size() - 1).x;
+		if(max < min){
+			double tmp = max;
+			max = min;
+			min = tmp;
+		}
+		double interval = ( max - min ) / liczbaPuktow;
+		for(int i = 0; i < 100; i++){
+			punkty[i] = min + interval * i;
+		}
+		return punkty;
+	}
+	
+	/*
 	private double getSkretZMaxPrzynaleznoscia(FuzzySetLinear1 zbior){
 		double maxPrzynaleznosc = 0 , skret = 0;
 		for(int i = 0; i < zbior.wierzcholki.size(); i++){
@@ -607,6 +646,7 @@ public class RegulyFuzzy1 {
 		}
 		return skret;
 	}
+	*/
 
 }
 

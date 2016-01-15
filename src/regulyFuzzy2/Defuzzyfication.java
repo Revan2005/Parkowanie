@@ -88,7 +88,7 @@ public class Defuzzyfication {
 		}
 		double sPrim2 = obliczS(tetaK);
 		//krok 4 i 5
-		if(sPrim2 == sPrim)
+		if(Math.abs(sPrim2 - sPrim) < 0.001)
 			return sPrim2;
 		else
 			sPrim = sPrim2;
@@ -120,7 +120,7 @@ public class Defuzzyfication {
 		}
 		double sPrim2 = obliczS(tetaK);
 		//krok 4 i 5
-		if(sPrim2 == sPrim)
+		if(Math.abs(sPrim2 - sPrim) < 0.001)
 			return sPrim2;
 		else
 			sPrim = sPrim2;
